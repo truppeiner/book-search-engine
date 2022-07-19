@@ -45,6 +45,25 @@ const resolvers = {
             const token = signToken(user)
 
             return { user, token };
+        },
+        // save a book 
+        saveBook: async (parent, { book }, context) => {
+            // { book } deconstructs book object
+            // checks to see if user logged in before anything else
+            if (context.user){
+                const pushBook = await User.findOneAndUpdate(
+                    // pulls users id from me
+                    { _id: context.user._id },
+                    // pushes saved book into savedBook array 
+                    { $push: {savedBooks: book }},
+                    // updates savedBooks array and validates
+                    { new: true, runValidators: true }
+                );
+                // runs addBook
+                return pushBook;
+            }
+            // kicks error if not logged in 
+            throw new AuthenticationError('No user logged in!');
         }
     }
 };
