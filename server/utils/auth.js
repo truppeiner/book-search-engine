@@ -25,11 +25,8 @@ module.exports = {
       req.user = data;
     } catch {
       console.log('Invalid token');
-      return req;
     }
-
-    // send to next endpoint
-    next();
+    return req;
   },
   signToken: function ({ username, email, _id }) {
     const payload = { username, email, _id };

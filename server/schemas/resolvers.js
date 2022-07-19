@@ -11,7 +11,17 @@ const resolvers = {
             return User.find()
                 .select('-__v -password')
                 .populate('savedBooks');
-        }
+        },
+        // get logged in user 
+        me: async (parent, args, context ) => {
+            if (context.user){
+                const userData = await User.findOne({ _id: context.user._id })
+                    .select('-__v -password')
+                    .populate('savedBooks')
+                    return userData;
+            }
+            throw new AuthenticationError('No user logged in!');
+        },
     },
     Mutation: {
         // login 
