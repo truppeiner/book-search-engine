@@ -64,6 +64,24 @@ const resolvers = {
             }
             // kicks error if not logged in 
             throw new AuthenticationError('No user logged in!');
+        },
+        // remove a book 
+        removeBook: async( parent, { bookId }, context) => {
+            // checks to see if user signed in
+            if (context.user){
+                const deleteBook = await User.findOneAndUpdate(
+                    // pulls current user id
+                    { _id: context.user._id },
+                    // pulls out book from saved book array by book id
+                    { $pull: {savedBooks: {bookId}}},
+                    // updates new savedBooks state
+                    { new: true }
+                );
+                // runs deletebook method
+                return deleteBook;
+            }
+            // kicks error if not logged in
+            throw new AuthenticationError('No user logged in!')
         }
     }
 };
