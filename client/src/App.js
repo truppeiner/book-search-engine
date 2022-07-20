@@ -32,7 +32,7 @@ const authLink = setContext((_, { headers }) =>{
 // link backend
 const link = from([
   errorLink,
-  new HttpLink({ uri: "http://localhost:3001/graphql" }),
+  new HttpLink({ uri: "/graphql" }),
 ]);
 
 // start client
